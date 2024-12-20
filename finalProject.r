@@ -5,6 +5,8 @@ library(arules)
 library(ggplot2)
 library(DT)
 
+
+
 ################ ui
 ui <- fluidPage (
   titlePanel("Data Science Project"),
@@ -88,7 +90,9 @@ server <- function(input, output, session) {
   output$payment_plot <- renderPlot({
     req(data())
     payment_totals <- aggregate(total ~ paymentType, data = data(), sum)
-    pie(payment_totals$total, labels = paste(payment_totals$paymentType, "\n", round(100 * payment_totals$total / sum(payment_totals$total), 1), "%"), col = rainbow(length(payment_totals$paymentType)), main = "Total Payments by Payment Type")
+    pie(payment_totals$total, labels = paste(payment_totals$paymentType, "\n",
+                            round(100 * payment_totals$total / sum(payment_totals$total), 1), "%"),
+                            col = rainbow(length(payment_totals$paymentType)), main = "Total Payments by Payment Type")
   })
   
   # Line Charts ==> total ~ age
@@ -103,13 +107,15 @@ server <- function(input, output, session) {
     req(data())
     city_totals <- aggregate(total ~ city, data = data(), sum)
     city_totals <- city_totals[order(-city_totals$total), ]
-    barplot(city_totals$total, names.arg = city_totals$city, col = rainbow(length(city_totals$city)), main = "Total Payments by City (Descending)", las = 2, xlab = "City", ylab = "Total Amount")
+    barplot(city_totals$total, names.arg = city_totals$city, col = rainbow(length(city_totals$city)),
+            main = "Total Payments by City (Descending)", las = 2, xlab = "City", ylab = "Total Amount")
   })
 
   # hist plot ==> Distribution of Total Spending  
   output$hist_plot <- renderPlot({
     req(data())
-    hist(data()$total, breaks = 20, col = "skyblue", main = "Distribution of Total Spending", xlab = "Total Spending", ylab = "Frequency", border = "white")
+    hist(data()$total, breaks = 20, col = "skyblue", main = "Distribution of Total Spending",
+         xlab = "Total Spending", ylab = "Frequency", border = "white")
   })
 }
 
